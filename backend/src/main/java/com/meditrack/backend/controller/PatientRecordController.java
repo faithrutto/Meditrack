@@ -1,0 +1,46 @@
+package com.meditrack.backend.controller;
+
+import com.meditrack.backend.model.Assessment;
+import com.meditrack.backend.model.HealthProfile;
+import com.meditrack.backend.service.MedicalRecordService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/records")
+@RequiredArgsConstructor
+public class PatientRecordController {
+
+    private final MedicalRecordService medicalRecordService;
+
+    @PostMapping("/assessment")
+    public ResponseEntity<Assessment> recordAssessment(
+            @RequestParam Long patientId,
+            @RequestParam Long providerId,
+            @RequestParam String diagnosis,
+            @RequestParam String notes) {
+        
+        Assessment assessment = medicalRecordService.recordAssessment(patientId, providerId, diagnosis, notes);
+        return ResponseEntity.ok(assessment);
+    }
+
+    @GetMapping("/assessment/patient/{patientId}")
+    public ResponseEntity<List<Assessment>> getPatientAssessments(@PathVariable Long patientId) {
+        return ResponseEntity.ok(medicalRecordService.getPatientAssessments(patientId));
+    }
+
+    @PutMapping("/profile/{patientId}")
+    public ResponseEntity<HealthProfile> updateHealthProfile(
+            @PathVariable Long patientId,
+            @RequestBody HealthProfile profile) {
+        return ResponseEntity.ok(medicalRecordService.updateHealthProfile(patientId, profile));
+    }
+
+    @GetMapping("/profile/{patientId}")
+    public ResponseEntity<HealthProfile> getPatientHealthProfile(@PathVariable Long patientId) {
+        return ResponseEntity.ok(medicalRecordService.getPatientHealthProfile(patientId));
+    }
+}
