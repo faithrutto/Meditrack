@@ -1,5 +1,6 @@
 package com.meditrack.backend.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,12 +31,18 @@ public class User {
     @Column(nullable = false)
     private Role role;
 
+    @Builder.Default
     private boolean isEmailVerified = false;
-    
+
     // TOTP secret for MFA
     private String mfaSecret;
-    
+
+    @Builder.Default
     private boolean isMfaEnabled = false;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("user")
+    private Profile profile;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

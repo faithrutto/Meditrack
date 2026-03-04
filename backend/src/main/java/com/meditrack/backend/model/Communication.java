@@ -34,5 +34,6 @@ public class Communication {
     @Column(nullable = false)
     private LocalDateTime timestamp;
 
+    @Builder.Default
     private boolean isRead = false;
 }

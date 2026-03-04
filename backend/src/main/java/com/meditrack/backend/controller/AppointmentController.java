@@ -1,6 +1,7 @@
 package com.meditrack.backend.controller;
 
 import com.meditrack.backend.model.Appointment;
+import com.meditrack.backend.model.Provider;
 import com.meditrack.backend.service.AppointmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ public class AppointmentController {
             @RequestParam Long providerId,
             @RequestParam String date,
             @RequestParam String purpose) {
-        
+
         LocalDateTime appointmentDate = LocalDateTime.parse(date);
         Appointment appointment = appointmentService.bookAppointment(patientId, providerId, appointmentDate, purpose);
         return ResponseEntity.ok(appointment);
@@ -43,5 +44,10 @@ public class AppointmentController {
             @PathVariable Long appointmentId,
             @RequestParam Appointment.AppointmentStatus status) {
         return ResponseEntity.ok(appointmentService.updateStatus(appointmentId, status));
+    }
+
+    @GetMapping("/providers")
+    public ResponseEntity<List<Provider>> getAllProviders() {
+        return ResponseEntity.ok(appointmentService.getAllProviders());
     }
 }

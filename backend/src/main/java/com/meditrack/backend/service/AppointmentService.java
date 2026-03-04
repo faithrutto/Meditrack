@@ -29,8 +29,9 @@ public class AppointmentService {
         // Check double booking within a 30 min window
         LocalDateTime start = date.minusMinutes(29);
         LocalDateTime end = date.plusMinutes(29);
-        List<Appointment> conflicts = appointmentRepository.findByProvider_ProviderIdAndAppointmentDateBetween(providerId, start, end);
-        
+        List<Appointment> conflicts = appointmentRepository
+                .findByProvider_ProviderIdAndAppointmentDateBetween(providerId, start, end);
+
         if (!conflicts.isEmpty()) {
             throw new RuntimeException("Provider is already booked for this time slot.");
         }
@@ -40,7 +41,7 @@ public class AppointmentService {
                 .provider(provider)
                 .appointmentDate(date)
                 .appointmentPurpose(purpose)
-                .status(Appointment.AppointmentStatus.SCHEDULED)
+                .status(Appointment.AppointmentStatus.PENDING)
                 .build();
 
         return appointmentRepository.save(appointment);
@@ -59,5 +60,9 @@ public class AppointmentService {
                 .orElseThrow(() -> new RuntimeException("Appointment not found"));
         appointment.setStatus(status);
         return appointmentRepository.save(appointment);
+    }
+
+    public List<Provider> getAllProviders() {
+        return providerRepository.findAll();
     }
 }

@@ -1,5 +1,6 @@
 package com.meditrack.backend.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,16 +17,17 @@ public class Profile {
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     @JoinColumn(name = "id")
+    @JsonIgnoreProperties("profile")
     private User user;
 
     private String firstName;
     private String lastName;
 
     private String bloodType;
-    
+
     @Column(columnDefinition = "TEXT")
     private String allergies;
-    
+
     @Column(columnDefinition = "TEXT")
     private String chronicIllnesses;
 

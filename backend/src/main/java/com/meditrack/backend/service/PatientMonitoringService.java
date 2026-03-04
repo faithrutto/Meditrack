@@ -48,15 +48,22 @@ public class PatientMonitoringService {
 
     private void analyzeVitals(Patient patient, VitalSigns vitals) {
         if (vitals.getHeartRate() != null && (vitals.getHeartRate() > 100 || vitals.getHeartRate() < 60)) {
-            alertService.createAlert(patient, "ABNORMAL_HEART_RATE", "Heart rate is abnormal: " + vitals.getHeartRate());
+            alertService.createAlert(patient, "ABNORMAL_HEART_RATE",
+                    "Heart rate is abnormal: " + vitals.getHeartRate());
         }
 
         if (vitals.getOxygenSaturation() != null && vitals.getOxygenSaturation() < 95) {
-            alertService.createAlert(patient, "LOW_OXYGEN", "Oxygen saturation is dangerously low: " + vitals.getOxygenSaturation() + "%");
+            alertService.createAlert(patient, "LOW_OXYGEN",
+                    "Oxygen saturation is dangerously low: " + vitals.getOxygenSaturation() + "%");
         }
-        
+
         if (vitals.getTemperature() != null && (vitals.getTemperature() > 37.5 || vitals.getTemperature() < 35.0)) {
-            alertService.createAlert(patient, "ABNORMAL_TEMPERATURE", "Temperature is out of range: " + vitals.getTemperature());
+            alertService.createAlert(patient, "ABNORMAL_TEMPERATURE",
+                    "Temperature is out of range: " + vitals.getTemperature());
         }
+    }
+
+    public java.util.List<VitalSigns> getPatientVitals(Long patientId) {
+        return vitalSignsRepository.findByPatient_PatientIdOrderByTimestampDesc(patientId);
     }
 }

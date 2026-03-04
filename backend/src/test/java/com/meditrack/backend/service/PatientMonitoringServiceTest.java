@@ -1,6 +1,5 @@
 package com.meditrack.backend.service;
 
-import com.meditrack.backend.model.Alert;
 import com.meditrack.backend.model.Patient;
 import com.meditrack.backend.model.VitalSigns;
 import com.meditrack.backend.repository.PatientRepository;
@@ -54,7 +53,7 @@ class PatientMonitoringServiceTest {
 
         assertNotNull(vitals);
         assertEquals(36.8, vitals.getTemperature());
-        
+
         // Ensure no alerts were triggered for normal vitals
         verify(alertService, never()).createAlert(any(), anyString(), anyString());
     }
@@ -72,10 +71,10 @@ class PatientMonitoringServiceTest {
 
         // Should trigger heart rate alert
         verify(alertService, times(1)).createAlert(eq(patient), eq("ABNORMAL_HEART_RATE"), anyString());
-        
+
         // Should trigger oxygen alert
         verify(alertService, times(1)).createAlert(eq(patient), eq("LOW_OXYGEN"), anyString());
-        
+
         // Should NOT trigger temperature alert
         verify(alertService, never()).createAlert(eq(patient), eq("ABNORMAL_TEMPERATURE"), anyString());
     }

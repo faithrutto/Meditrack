@@ -10,6 +10,8 @@ import java.util.List;
 @Repository
 public interface VitalSignsRepository extends JpaRepository<VitalSigns, Long> {
     List<VitalSigns> findByPatient_PatientId(Long patientId);
+
     List<VitalSigns> findByPatient_PatientIdOrderByTimestampDesc(Long patientId);
+
     List<VitalSigns> findByTimestampBetween(LocalDateTime start, LocalDateTime end);
 }

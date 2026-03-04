@@ -44,7 +44,21 @@ const Register = () => {
             });
             navigate('/login?registered=true');
         } catch (err) {
-            setError(err.response?.data?.message || 'Registration failed');
+            if (err.response?.data && typeof err.response.data === 'object') {
+                const data = err.response.data;
+                // Extract all specific field errors returned by the Java backend
+                const explicitErrors = Object.entries(data)
+                    .filter(([key]) => key !== 'message')
+                    .map(([_, value]) => value);
+                
+                if (explicitErrors.length > 0) {
+                    setError('Issues: ' + explicitErrors.join(' | '));
+                } else {
+                    setError(data.message || 'Registration failed');
+                }
+            } else {
+                setError('Registration failed due to network error');
+            }
         } finally {
             setLoading(false);
         }

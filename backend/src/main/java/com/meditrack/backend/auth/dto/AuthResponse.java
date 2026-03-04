@@ -15,4 +15,10 @@ public class AuthResponse {
     private String role;
     private boolean mfaRequired;
     private String message;
+    private String firstName;
+    private String lastName;
+    private String emergencyContactName;
+    private String emergencyContactPhone;
+    private Long patientId;
+    private Long providerId;
 }

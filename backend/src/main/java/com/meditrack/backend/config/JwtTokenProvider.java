@@ -1,6 +1,5 @@
 package com.meditrack.backend.config;
 
-import com.meditrack.backend.user.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;

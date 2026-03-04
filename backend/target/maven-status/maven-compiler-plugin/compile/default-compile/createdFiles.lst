@@ -9,6 +9,7 @@ com\meditrack\backend\user\ProfileRepository.class
 com\meditrack\backend\model\Appointment$AppointmentStatus.class
 com\meditrack\backend\model\VitalSigns.class
 com\meditrack\backend\service\MedicalRecordService.class
+com\meditrack\backend\config\UserSecurity.class
 com\meditrack\backend\repository\AlertRepository.class
 com\meditrack\backend\repository\HealthProfileRepository.class
 com\meditrack\backend\auth\AuthService.class
@@ -47,5 +48,6 @@ com\meditrack\backend\model\HealthProfile.class
 com\meditrack\backend\model\Patient.class
 com\meditrack\backend\model\Alert$AlertStatus.class
 com\meditrack\backend\repository\VitalSignsRepository.class
+com\meditrack\backend\service\EmailService.class
 com\meditrack\backend\model\Communication.class
 com\meditrack\backend\repository\ProviderRepository.class

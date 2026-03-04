@@ -25,13 +25,13 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (email, password) => {
         const response = await api.post('/auth/login', { email, password });
-        const { token, role, mfaRequired } = response.data;
+        const { token, role, mfaRequired, firstName, lastName, patientId, providerId, emergencyContactName, emergencyContactPhone } = response.data;
 
         if (mfaRequired) {
             return { mfaRequired: true, email };
         }
 
-        const userData = { email, role };
+        const userData = { email, role, firstName, lastName, patientId, providerId, emergencyContactName, emergencyContactPhone };
         localStorage.setItem('token', token);
         localStorage.setItem('user', JSON.stringify(userData));
         setUser(userData);

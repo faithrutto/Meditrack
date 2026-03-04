@@ -26,7 +26,8 @@ const Login = () => {
                 navigate('/');
             }
         } catch (err) {
-            setError('Invalid email or password');
+            const errorMessage = err.response?.data?.message || err.message || 'An unexpected error occurred';
+            setError(errorMessage);
         } finally {
             setLoading(false);
         }

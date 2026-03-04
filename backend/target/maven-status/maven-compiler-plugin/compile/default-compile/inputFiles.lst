@@ -8,6 +8,7 @@ C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditr
 C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\config\JwtAuthenticationFilter.java
 C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\config\JwtTokenProvider.java
 C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\config\SecurityConfig.java
+C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\config\UserSecurity.java
 C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\controller\AppointmentController.java
 C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\controller\AuthController.java
 C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\controller\PatientRecordController.java
@@ -30,6 +31,7 @@ C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditr
 C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\repository\VitalSignsRepository.java
 C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\service\AlertService.java
 C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\service\AppointmentService.java
+C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\service\EmailService.java
 C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\service\MedicalRecordService.java
 C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\service\PatientMonitoringService.java
 C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\user\Profile.java

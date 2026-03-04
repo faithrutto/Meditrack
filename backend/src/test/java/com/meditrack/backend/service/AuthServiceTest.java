@@ -44,12 +44,17 @@ class AuthServiceTest {
     @Mock
     private JwtTokenProvider tokenProvider;
 
+    @Mock
+    private com.meditrack.backend.service.EmailService emailService;
+
     @InjectMocks
     private AuthService authService;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        // Set the self-injection field to the service itself for testing
+        org.springframework.test.util.ReflectionTestUtils.setField(authService, "self", authService);
     }
 
     @Test
@@ -63,7 +68,7 @@ class AuthServiceTest {
 
         when(userRepository.existsByEmail("test@test.com")).thenReturn(false);
         when(passwordEncoder.encode(anyString())).thenReturn("hashed_password");
-        
+
         User savedUser = new User();
         savedUser.setId(1L);
         savedUser.setEmail("test@test.com");
@@ -73,7 +78,7 @@ class AuthServiceTest {
 
         assertNotNull(response);
         assertEquals("User registered successfully. Please verify your email.", response.getMessage());
-        
+
         verify(userRepository, times(1)).save(any(User.class));
         verify(profileRepository, times(1)).save(any());
     }
