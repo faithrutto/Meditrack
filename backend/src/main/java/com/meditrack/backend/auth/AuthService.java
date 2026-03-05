@@ -35,26 +35,11 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider tokenProvider;
     private final EmailService emailService;
-    // Self-injection to go through Spring proxy so @Transactional is honored on
-    // saveUserToDatabase
-    @org.springframework.beans.factory.annotation.Autowired
-    @org.springframework.context.annotation.Lazy
-    private AuthService self;
 
-    // Public entry point — NOT transactional, so email is sent after DB commit
-    public AuthResponse register(RegisterRequest request) {
-        // Call via 'self' proxy so @Transactional on saveUserToDatabase is honored
-        User user = self.saveUserToDatabase(request);
-        // Email is sent AFTER the transaction commits; failure here won't roll back the
-        // user
-        emailService.sendVerificationEmail(user);
-        return AuthResponse.builder()
-                .message("User registered successfully. Please verify your email.")
-                .build();
-    }
-
+    // Public entry point - transactional to ensure all DB operations succeed
+    // together
     @Transactional
-    public User saveUserToDatabase(RegisterRequest request) {
+    public AuthResponse register(RegisterRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new RuntimeException("Email is already registered");
         }
@@ -93,7 +78,13 @@ public class AuthService {
             providerRepository.save(provider);
         }
 
-        return user;
+        // Email is sent ASYNCHRONOUSLY; success/failure here won't affect the
+        // main transaction thanks to @Async in EmailService.
+        emailService.sendVerificationEmail(user);
+
+        return AuthResponse.builder()
+                .message("User registered successfully. Please verify your email.")
+                .build();
     }
 
     public AuthResponse login(LoginRequest request) {

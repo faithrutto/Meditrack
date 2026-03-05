@@ -50,14 +50,14 @@ const Register = () => {
                 const explicitErrors = Object.entries(data)
                     .filter(([key]) => key !== 'message')
                     .map(([_, value]) => value);
-                
+
                 if (explicitErrors.length > 0) {
                     setError('Issues: ' + explicitErrors.join(' | '));
                 } else {
                     setError(data.message || 'Registration failed');
                 }
             } else {
-                setError('Registration failed due to network error');
+                setError('Registration failed. Please ensure the backend is running and reachable.');
             }
         } finally {
             setLoading(false);

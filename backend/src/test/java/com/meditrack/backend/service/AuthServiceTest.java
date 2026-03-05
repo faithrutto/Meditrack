@@ -53,8 +53,6 @@ class AuthServiceTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        // Set the self-injection field to the service itself for testing
-        org.springframework.test.util.ReflectionTestUtils.setField(authService, "self", authService);
     }
 
     @Test

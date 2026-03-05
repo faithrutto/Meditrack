@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,7 +15,15 @@ public class EmailService {
 
     private final JavaMailSender mailSender;
 
+    @org.springframework.beans.factory.annotation.Value("${meditrack.email.enabled:true}")
+    private boolean emailEnabled;
+
+    @Async
     public void sendVerificationEmail(User user) {
+        if (!emailEnabled) {
+            log.info("Email sending is disabled. Skipping verification email for {}", user.getEmail());
+            return;
+        }
         try {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setFrom("noreply@meditrack.com");
