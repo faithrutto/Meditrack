@@ -17,21 +17,24 @@ public class Assessment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "assessment_id")
     private Long assessmentId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id", nullable = false)
+    @com.fasterxml.jackson.annotation.JsonIgnore
     private Patient patient;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "provider_id", nullable = false)
+    @com.fasterxml.jackson.annotation.JsonIgnore
     private Provider provider;
 
     private String diagnosis;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(name = "clinical_notes", columnDefinition = "TEXT")
     private String clinicalNotes;
 
-    @Column(nullable = false)
+    @Column(name = "assessment_date", nullable = false)
     private LocalDateTime assessmentDate;
 }

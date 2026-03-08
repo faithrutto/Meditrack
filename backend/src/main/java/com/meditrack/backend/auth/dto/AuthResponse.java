@@ -21,4 +21,5 @@ public class AuthResponse {
     private String emergencyContactPhone;
     private Long patientId;
     private Long providerId;
+    private Long userId;
 }

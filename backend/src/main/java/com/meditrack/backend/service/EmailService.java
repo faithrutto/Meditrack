@@ -44,4 +44,26 @@ public class EmailService {
             log.error("Failed to send verification email to {}: {}", user.getEmail(), e.getMessage());
         }
     }
+
+    @Async
+    public void sendOtpEmail(String email, String otp, String type) {
+        if (!emailEnabled) {
+            log.info("Email sending is disabled. Skipping OTP email for {}", email);
+            return;
+        }
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom("noreply@meditrack.com");
+            message.setTo(email);
+            message.setSubject("MediTrack - Your Verification Code");
+
+            message.setText("Your verification code for " + type + " is: " + otp + "\n\n" +
+                    "This code will expire in 10 minutes. Please do not share this code with anyone.");
+
+            mailSender.send(message);
+            log.info("OTP email sent to {}", email);
+        } catch (Exception e) {
+            log.error("Failed to send OTP email to {}: {}", email, e.getMessage());
+        }
+    }
 }

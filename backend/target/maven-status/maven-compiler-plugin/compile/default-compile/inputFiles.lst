@@ -1,7 +1,10 @@
 C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\auth\AuthService.java
 C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\auth\dto\AuthResponse.java
+C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\auth\dto\ForgotPasswordRequest.java
 C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\auth\dto\LoginRequest.java
 C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\auth\dto\RegisterRequest.java
+C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\auth\dto\ResetPasswordRequest.java
+C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\auth\dto\VerifyOtpRequest.java
 C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\BackendApplication.java
 C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\config\CustomUserDetailsService.java
 C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\config\GlobalExceptionHandler.java
@@ -9,8 +12,10 @@ C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditr
 C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\config\JwtTokenProvider.java
 C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\config\SecurityConfig.java
 C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\config\UserSecurity.java
+C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\controller\AlertController.java
 C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\controller\AppointmentController.java
 C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\controller\AuthController.java
+C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\controller\CommunicationController.java
 C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\controller\PatientRecordController.java
 C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\controller\VitalSignsController.java
 C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\model\Alert.java
@@ -20,6 +25,7 @@ C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditr
 C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\model\HealthProfile.java
 C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\model\Patient.java
 C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\model\Provider.java
+C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\model\VerificationCode.java
 C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\model\VitalSigns.java
 C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\repository\AlertRepository.java
 C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\repository\AppointmentRepository.java
@@ -28,9 +34,11 @@ C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditr
 C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\repository\HealthProfileRepository.java
 C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\repository\PatientRepository.java
 C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\repository\ProviderRepository.java
+C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\repository\VerificationCodeRepository.java
 C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\repository\VitalSignsRepository.java
 C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\service\AlertService.java
 C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\service\AppointmentService.java
+C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\service\CommunicationService.java
 C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\service\EmailService.java
 C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\service\MedicalRecordService.java
 C:\Users\FAITH RUTTO\Documents\vscode\Meditrack\backend\src\main\java\com\meditrack\backend\service\PatientMonitoringService.java

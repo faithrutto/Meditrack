@@ -66,4 +66,26 @@ public class PatientMonitoringService {
     public java.util.List<VitalSigns> getPatientVitals(Long patientId) {
         return vitalSignsRepository.findByPatient_PatientIdOrderByTimestampDesc(patientId);
     }
+
+    public VitalSigns updateVitals(Long vitalId, Double temp, String bp, Double hr, Double o2) {
+        VitalSigns vitals = vitalSignsRepository.findById(vitalId)
+                .orElseThrow(() -> new RuntimeException("Vital signs record not found"));
+
+        if (temp != null)
+            vitals.setTemperature(temp);
+        if (bp != null)
+            vitals.setBloodPressure(bp);
+        if (hr != null)
+            vitals.setHeartRate(hr);
+        if (o2 != null)
+            vitals.setOxygenSaturation(o2);
+
+        vitals.setTimestamp(LocalDateTime.now()); // Update timestamp to reflect edit time
+
+        vitals = vitalSignsRepository.save(vitals);
+
+        analyzeVitals(vitals.getPatient(), vitals);
+
+        return vitals;
+    }
 }

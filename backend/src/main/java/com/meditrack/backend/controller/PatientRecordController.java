@@ -31,21 +31,21 @@ public class PatientRecordController {
 
     @GetMapping("/assessment/patient/{patientId}")
     @PreAuthorize("hasRole('PROVIDER') or (hasRole('PATIENT') and @userSecurity.isCurrentUserPatient(#patientId))")
-    public ResponseEntity<List<Assessment>> getPatientAssessments(@PathVariable Long patientId) {
+    public ResponseEntity<List<Assessment>> getPatientAssessments(@PathVariable("patientId") Long patientId) {
         return ResponseEntity.ok(medicalRecordService.getPatientAssessments(patientId));
     }
 
     @PutMapping("/profile/{patientId}")
     @PreAuthorize("hasRole('PROVIDER') or (hasRole('PATIENT') and @userSecurity.isCurrentUserPatient(#patientId))")
     public ResponseEntity<HealthProfile> updateHealthProfile(
-            @PathVariable Long patientId,
+            @PathVariable("patientId") Long patientId,
             @RequestBody HealthProfile profile) {
         return ResponseEntity.ok(medicalRecordService.updateHealthProfile(patientId, profile));
     }
 
     @GetMapping("/profile/{patientId}")
     @PreAuthorize("hasRole('PROVIDER') or (hasRole('PATIENT') and @userSecurity.isCurrentUserPatient(#patientId))")
-    public ResponseEntity<HealthProfile> getPatientHealthProfile(@PathVariable Long patientId) {
+    public ResponseEntity<HealthProfile> getPatientHealthProfile(@PathVariable("patientId") Long patientId) {
         return ResponseEntity.ok(medicalRecordService.getPatientHealthProfile(patientId));
     }
 }

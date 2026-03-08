@@ -42,7 +42,7 @@ const Register = () => {
                 password: formData.password,
                 role: formData.role
             });
-            navigate('/login?registered=true');
+            navigate('/verify-otp', { state: { email: formData.email, type: 'REGISTRATION' } });
         } catch (err) {
             if (err.response?.data && typeof err.response.data === 'object') {
                 const data = err.response.data;

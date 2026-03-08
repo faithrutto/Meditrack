@@ -18,6 +18,7 @@ public class Communication {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "message_id")
     private Long messageId;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -28,12 +29,13 @@ public class Communication {
     @JoinColumn(name = "receiver_id", nullable = false)
     private User receiver;
 
-    @Column(columnDefinition = "TEXT", nullable = false)
+    @Column(name = "message_content", columnDefinition = "TEXT", nullable = false)
     private String messageContent;
 
-    @Column(nullable = false)
+    @Column(name = "timestamp", nullable = false)
     private LocalDateTime timestamp;
 
     @Builder.Default
+    @Column(name = "is_read")
     private boolean isRead = false;
 }

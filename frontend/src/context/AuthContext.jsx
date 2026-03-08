@@ -25,13 +25,14 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (email, password) => {
         const response = await api.post('/auth/login', { email, password });
-        const { token, role, mfaRequired, firstName, lastName, patientId, providerId, emergencyContactName, emergencyContactPhone } = response.data;
+        const { token, role, mfaRequired, firstName, lastName, patientId, providerId, userId, emergencyContactName, emergencyContactPhone } = response.data;
 
         if (mfaRequired) {
             return { mfaRequired: true, email };
         }
 
-        const userData = { email, role, firstName, lastName, patientId, providerId, emergencyContactName, emergencyContactPhone };
+        const userData = { email, role, firstName, lastName, patientId, providerId, id: userId, emergencyContactName, emergencyContactPhone };
+        // In frontend mapping 'id' often refers to the User ID
         localStorage.setItem('token', token);
         localStorage.setItem('user', JSON.stringify(userData));
         setUser(userData);

@@ -12,6 +12,9 @@ const DoctorDashboard = React.lazy(() => import('./pages/DoctorDashboard'));
 const AdminDashboard = React.lazy(() => import('./pages/AdminDashboard'));
 const Appointments = React.lazy(() => import('./pages/Appointments'));
 const Profile = React.lazy(() => import('./pages/Profile'));
+const VerifyOTP = React.lazy(() => import('./pages/VerifyOTP'));
+const ForgotPassword = React.lazy(() => import('./pages/ForgotPassword'));
+const ResetPassword = React.lazy(() => import('./pages/ResetPassword'));
 const Layout = React.lazy(() => import('./components/Layout'));
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
@@ -53,6 +56,9 @@ function App() {
             <Routes>
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/verify-otp" element={<VerifyOTP />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/mfa" element={<Mfa />} />
 
               <Route path="/" element={<Layout />}>

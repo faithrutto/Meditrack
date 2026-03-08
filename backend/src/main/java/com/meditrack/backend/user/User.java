@@ -24,7 +24,7 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
+    @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 
     @Enumerated(EnumType.STRING)
@@ -32,19 +32,24 @@ public class User {
     private Role role;
 
     @Builder.Default
+    @Column(name = "is_email_verified")
     private boolean isEmailVerified = false;
 
     // TOTP secret for MFA
     private String mfaSecret;
 
     @Builder.Default
+    @Column(name = "is_mfa_enabled")
     private boolean isMfaEnabled = false;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("user")
     private Profile profile;
 
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
     @PrePersist

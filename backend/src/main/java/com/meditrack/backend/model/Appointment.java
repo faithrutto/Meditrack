@@ -17,6 +17,7 @@ public class Appointment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "appointment_id")
     private Long appointmentId;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -27,9 +28,10 @@ public class Appointment {
     @JoinColumn(name = "provider_id", nullable = false)
     private Provider provider;
 
-    @Column(nullable = false)
+    @Column(name = "appointment_date", nullable = false)
     private LocalDateTime appointmentDate;
 
+    @Column(name = "appointment_purpose")
     private String appointmentPurpose;
 
     @Enumerated(EnumType.STRING)

@@ -11,8 +11,11 @@ import com.meditrack.backend.user.User;
 import com.meditrack.backend.user.UserRepository;
 import com.meditrack.backend.model.Patient;
 import com.meditrack.backend.model.Provider;
+import com.meditrack.backend.model.VerificationCode;
+import com.meditrack.backend.model.VerificationCode.VerificationCodeType;
 import com.meditrack.backend.repository.PatientRepository;
 import com.meditrack.backend.repository.ProviderRepository;
+import com.meditrack.backend.repository.VerificationCodeRepository;
 import com.meditrack.backend.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,6 +25,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -35,6 +41,7 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider tokenProvider;
     private final EmailService emailService;
+    private final VerificationCodeRepository verificationCodeRepository;
 
     // Public entry point - transactional to ensure all DB operations succeed
     // together
@@ -78,12 +85,101 @@ public class AuthService {
             providerRepository.save(provider);
         }
 
-        // Email is sent ASYNCHRONOUSLY; success/failure here won't affect the
-        // main transaction thanks to @Async in EmailService.
-        emailService.sendVerificationEmail(user);
+        // Generate and send OTP for registration
+        generateAndSendOtp(user, VerificationCodeType.REGISTRATION);
 
         return AuthResponse.builder()
-                .message("User registered successfully. Please verify your email.")
+                .message("Registration successful. Please enter the verification code sent to your email.")
+                .build();
+    }
+
+    public void generateAndSendOtp(User user, VerificationCodeType type) {
+        // Remove old codes of same type
+        verificationCodeRepository.deleteByUserAndType(user, type);
+
+        // Generate 6-digit code
+        String code = String.format("%06d", new Random().nextInt(1000000));
+
+        VerificationCode verificationCode = VerificationCode.builder()
+                .code(code)
+                .user(user)
+                .type(type)
+                .expiryDate(LocalDateTime.now().plusMinutes(10))
+                .build();
+
+        verificationCodeRepository.save(verificationCode);
+        emailService.sendOtpEmail(user.getEmail(), code, type.name());
+
+        // For local development ease: log to a dedicated file
+        try {
+            java.nio.file.Files.writeString(java.nio.file.Paths.get("LATEST_OTP.txt"),
+                    "Type: " + type + "\nEmail: " + user.getEmail() + "\nCode: " + code + "\nTime: "
+                            + java.time.LocalDateTime.now());
+        } catch (java.io.IOException e) {
+            System.err.println("Could not write OTP to file: " + e.getMessage());
+        }
+    }
+
+    @Transactional
+    public AuthResponse verifyOtp(String email, String code, VerificationCodeType type) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        VerificationCode verificationCode = verificationCodeRepository.findByUserAndCodeAndType(user, code, type)
+                .orElseThrow(() -> new RuntimeException("Invalid or expired verification code"));
+
+        if (verificationCode.getExpiryDate().isBefore(LocalDateTime.now())) {
+            verificationCodeRepository.delete(verificationCode);
+            throw new RuntimeException("Verification code has expired");
+        }
+
+        if (type == VerificationCodeType.REGISTRATION) {
+            user.setEmailVerified(true);
+            userRepository.save(user);
+            verificationCodeRepository.delete(verificationCode);
+        }
+
+        // We DO NOT delete the code if it's PASSWORD_RESET because ResetPassword
+        // needs to verify it again when actually submitting the new password.
+
+        return AuthResponse.builder()
+                .message("Verification successful")
+                .build();
+    }
+
+    @Transactional
+    public AuthResponse forgotPassword(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("No account found with this email"));
+
+        generateAndSendOtp(user, VerificationCodeType.PASSWORD_RESET);
+
+        return AuthResponse.builder()
+                .message("Password reset code sent to your email")
+                .build();
+    }
+
+    @Transactional
+    public AuthResponse resetPassword(String email, String code, String newPassword) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        VerificationCode verificationCode = verificationCodeRepository
+                .findByUserAndCodeAndType(user, code, VerificationCodeType.PASSWORD_RESET)
+                .orElseThrow(() -> new RuntimeException("Invalid or expired reset code"));
+
+        if (verificationCode.getExpiryDate().isBefore(LocalDateTime.now())) {
+            verificationCodeRepository.delete(verificationCode);
+            throw new RuntimeException("Reset code has expired");
+        }
+
+        user.setPasswordHash(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+
+        verificationCodeRepository.delete(verificationCode);
+
+        return AuthResponse.builder()
+                .message("Password has been reset successfully")
                 .build();
     }
 
@@ -133,6 +229,7 @@ public class AuthService {
                 .emergencyContactPhone(emergencyContactPhone)
                 .patientId(patientId)
                 .providerId(providerId)
+                .userId(user.getId())
                 .mfaRequired(false)
                 .message("Login successful")
                 .build();

@@ -45,21 +45,47 @@ public class MedicalRecordService {
     }
 
     public HealthProfile updateHealthProfile(Long patientId, HealthProfile profileDetails) {
+        System.out.println("DEBUG: updateHealthProfile called for patientId: " + patientId);
+
         HealthProfile profile = healthProfileRepository.findByPatient_PatientId(patientId)
-                .orElse(HealthProfile.builder().patient(patientRepository.findById(patientId).orElseThrow()).build());
-        
-        profile.setBloodType(profileDetails.getBloodType());
-        profile.setHeight(profileDetails.getHeight());
-        profile.setWeight(profileDetails.getWeight());
-        profile.setKnownAllergies(profileDetails.getKnownAllergies());
-        profile.setCurrentMedications(profileDetails.getCurrentMedications());
-        profile.setPastMedicalHistory(profileDetails.getPastMedicalHistory());
+                .orElseGet(() -> {
+                    System.out.println("DEBUG: Creating new health profile for patient " + patientId);
+                    Patient patient = patientRepository.findById(patientId)
+                            .orElseThrow(() -> {
+                                System.out.println("DEBUG ERROR: Patient ID " + patientId + " NOT FOUND in database");
+                                return new RuntimeException("Patient profile update failed: Patient record (ID: "
+                                        + patientId + ") does not exist.");
+                            });
+                    return HealthProfile.builder().patient(patient).build();
+                });
+
+        if (profileDetails.getBloodType() != null && !profileDetails.getBloodType().isEmpty())
+            profile.setBloodType(profileDetails.getBloodType());
+
+        if (profileDetails.getHeight() != null)
+            profile.setHeight(profileDetails.getHeight());
+
+        if (profileDetails.getWeight() != null)
+            profile.setWeight(profileDetails.getWeight());
+
+        if (profileDetails.getKnownAllergies() != null && !profileDetails.getKnownAllergies().isEmpty())
+            profile.setKnownAllergies(profileDetails.getKnownAllergies());
+
+        if (profileDetails.getCurrentMedications() != null && !profileDetails.getCurrentMedications().isEmpty())
+            profile.setCurrentMedications(profileDetails.getCurrentMedications());
+
+        if (profileDetails.getPastMedicalHistory() != null && !profileDetails.getPastMedicalHistory().isEmpty())
+            profile.setPastMedicalHistory(profileDetails.getPastMedicalHistory());
 
         return healthProfileRepository.save(profile);
     }
 
     public HealthProfile getPatientHealthProfile(Long patientId) {
         return healthProfileRepository.findByPatient_PatientId(patientId)
-                .orElseThrow(() -> new RuntimeException("Profile not found"));
+                .orElseGet(() -> {
+                    Patient patient = patientRepository.findById(patientId)
+                            .orElseThrow(() -> new RuntimeException("Patient not found ID: " + patientId));
+                    return HealthProfile.builder().patient(patient).build();
+                });
     }
 }
