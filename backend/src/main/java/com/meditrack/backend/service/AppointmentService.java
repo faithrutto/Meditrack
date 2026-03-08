@@ -48,11 +48,11 @@ public class AppointmentService {
     }
 
     public List<Appointment> getPatientAppointments(Long patientId) {
-        return appointmentRepository.findByPatient_PatientId(patientId);
+        return appointmentRepository.findByPatient_PatientIdOrderByAppointmentDateDesc(patientId);
     }
 
     public List<Appointment> getProviderAppointments(Long providerId) {
-        return appointmentRepository.findByProvider_ProviderId(providerId);
+        return appointmentRepository.findByProvider_ProviderIdOrderByAppointmentDateDesc(providerId);
     }
 
     public Appointment updateStatus(Long appointmentId, Appointment.AppointmentStatus status) {

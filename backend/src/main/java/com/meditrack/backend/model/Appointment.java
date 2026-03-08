@@ -35,6 +35,7 @@ public class Appointment {
     private String appointmentPurpose;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "appointment_status", length = 50)
     private AppointmentStatus status;
 
     public enum AppointmentStatus {

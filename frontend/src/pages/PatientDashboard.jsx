@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { Activity, Heart, Thermometer, Droplets, Wind, FileText, ClipboardList, Scale, Ruler, Calendar } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import api from '../api/axiosConfig';
 
 const PatientDashboard = () => {
@@ -175,6 +176,13 @@ const PatientDashboard = () => {
                         <Activity className={`h-4 w-4 text-primary ${loading ? 'animate-spin' : ''}`} />
                         <span className="text-sm font-bold text-gray-700">Sync Now</span>
                     </button>
+                    <Link
+                        to="/appointments"
+                        className="flex items-center space-x-2 px-4 py-2 bg-primary text-white rounded-lg shadow-sm hover:bg-blue-700 transition-colors font-medium text-sm"
+                    >
+                        <Calendar className="h-4 w-4 mr-1" />
+                        Book Appointment
+                    </Link>
                     <div className="bg-red-50 border border-red-100 rounded-lg p-3">
                         <p className="text-xs font-semibold text-red-600 uppercase tracking-wider">Known Allergies</p>
                         <p className="text-sm font-medium text-red-800">{healthProfile?.knownAllergies || 'None recorded'}</p>

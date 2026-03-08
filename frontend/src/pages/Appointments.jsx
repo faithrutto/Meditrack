@@ -38,14 +38,17 @@ const PatientAppointments = ({ user }) => {
 
     const fetchData = async () => {
         try {
-            const [aptsRes, provsRes] = await Promise.all([
-                api.get(`/appointments/patient/${user.patientId}`),
-                api.get('/appointments/providers'),
-            ]);
-            setAppointments(aptsRes.data || []);
+            const provsRes = await api.get('/appointments/providers');
             setProviders(provsRes.data || []);
         } catch (err) {
-            console.error('Failed to load appointment data', err);
+            console.error('Failed to load providers', err);
+        }
+
+        try {
+            const aptsRes = await api.get(`/appointments/patient/${user.patientId}`);
+            setAppointments(aptsRes.data || []);
+        } catch (err) {
+            console.error('Failed to load appointments', err);
         } finally {
             setLoading(false);
         }
