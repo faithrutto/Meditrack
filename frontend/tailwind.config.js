@@ -11,8 +11,8 @@ export default {
                 primary: '#2563eb',
                 secondary: '#475569',
                 accent: '#06b6d4',
-                background: '#f8fafc',
-                surface: '#ffffff',
+                background: '#e2f1ff',
+                surface: '#fff8f8',
                 // Dark mode colors
                 'dark-bg': '#0f172a',
                 'dark-surface': '#1e293b',
