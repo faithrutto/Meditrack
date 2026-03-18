@@ -72,6 +72,11 @@ public class AuthService {
         profile.setUser(user);
         profile.setFirstName(request.getFirstName());
         profile.setLastName(request.getLastName());
+        profile.setContactNumber(request.getContactNumber());
+        profile.setDateOfBirth(request.getDateOfBirth());
+        profile.setNationalId(request.getNationalId());
+        profile.setGender(request.getGender());
+        profile.setHomeAddress(request.getHomeAddress());
         profileRepository.save(profile);
 
         if (user.getRole() == Role.PATIENT) {

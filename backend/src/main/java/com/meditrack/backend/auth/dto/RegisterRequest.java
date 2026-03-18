@@ -23,4 +23,14 @@ public class RegisterRequest {
     private String lastName;
 
     private String role; // "PATIENT" or "PROVIDER"
+
+    private String contactNumber;
+
+    private java.time.LocalDate dateOfBirth;
+
+    private String nationalId;
+
+    private String gender;
+
+    private String homeAddress;
 }

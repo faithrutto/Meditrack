@@ -8,6 +8,11 @@ const Register = () => {
         firstName: '',
         lastName: '',
         email: '',
+        contactNumber: '',
+        dateOfBirth: '',
+        nationalId: '',
+        gender: '',
+        homeAddress: '',
         password: '',
         confirmPassword: '',
         role: 'PATIENT'
@@ -39,6 +44,11 @@ const Register = () => {
                 firstName: formData.firstName,
                 lastName: formData.lastName,
                 email: formData.email,
+                contactNumber: formData.contactNumber,
+                dateOfBirth: formData.dateOfBirth,
+                nationalId: formData.nationalId,
+                gender: formData.gender,
+                homeAddress: formData.homeAddress,
                 password: formData.password,
                 role: formData.role
             });
@@ -109,6 +119,72 @@ const Register = () => {
                                     name="lastName"
                                     required
                                     value={formData.lastName}
+                                    onChange={handleChange}
+                                    className="mt-1 appearance-none block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+                                />
+                            </div>
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700">Contact Number</label>
+                            <input
+                                type="tel"
+                                name="contactNumber"
+                                required
+                                value={formData.contactNumber}
+                                onChange={handleChange}
+                                className="mt-1 appearance-none block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+                            />
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700">Date of Birth</label>
+                                <input
+                                    type="date"
+                                    name="dateOfBirth"
+                                    required
+                                    value={formData.dateOfBirth}
+                                    onChange={handleChange}
+                                    className="mt-1 appearance-none block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700">National ID</label>
+                                <input
+                                    type="text"
+                                    name="nationalId"
+                                    required
+                                    value={formData.nationalId}
+                                    onChange={handleChange}
+                                    className="mt-1 appearance-none block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700">Gender</label>
+                                <select
+                                    name="gender"
+                                    required
+                                    value={formData.gender}
+                                    onChange={handleChange}
+                                    className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 border focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-lg"
+                                >
+                                    <option value="">Select Gender</option>
+                                    <option value="MALE">Male</option>
+                                    <option value="FEMALE">Female</option>
+                                    <option value="OTHER">Other</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700">Home Address</label>
+                                <input
+                                    type="text"
+                                    name="homeAddress"
+                                    required
+                                    value={formData.homeAddress}
                                     onChange={handleChange}
                                     className="mt-1 appearance-none block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
                                 />

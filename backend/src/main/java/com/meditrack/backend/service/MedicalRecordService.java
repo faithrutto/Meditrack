@@ -4,6 +4,9 @@ import com.meditrack.backend.model.Assessment;
 import com.meditrack.backend.model.HealthProfile;
 import com.meditrack.backend.model.Patient;
 import com.meditrack.backend.model.Provider;
+import com.meditrack.backend.dto.PatientProfileDto;
+import com.meditrack.backend.user.Profile;
+import com.meditrack.backend.user.ProfileRepository;
 import com.meditrack.backend.repository.AssessmentRepository;
 import com.meditrack.backend.repository.HealthProfileRepository;
 import com.meditrack.backend.repository.PatientRepository;
@@ -22,6 +25,7 @@ public class MedicalRecordService {
     private final HealthProfileRepository healthProfileRepository;
     private final PatientRepository patientRepository;
     private final ProviderRepository providerRepository;
+    private final ProfileRepository profileRepository;
 
     public Assessment recordAssessment(Long patientId, Long providerId, String diagnosis, String notes) {
         Patient patient = patientRepository.findById(patientId)
@@ -44,20 +48,15 @@ public class MedicalRecordService {
         return assessmentRepository.findByPatient_PatientIdOrderByAssessmentDateDesc(patientId);
     }
 
-    public HealthProfile updateHealthProfile(Long patientId, HealthProfile profileDetails) {
+    public PatientProfileDto updateHealthProfile(Long patientId, PatientProfileDto profileDetails) {
         System.out.println("DEBUG: updateHealthProfile called for patientId: " + patientId);
 
+        Patient patient = patientRepository.findById(patientId)
+                .orElseThrow(() -> new RuntimeException("Patient profile update failed: Patient record (ID: "
+                        + patientId + ") does not exist."));
+
         HealthProfile profile = healthProfileRepository.findByPatient_PatientId(patientId)
-                .orElseGet(() -> {
-                    System.out.println("DEBUG: Creating new health profile for patient " + patientId);
-                    Patient patient = patientRepository.findById(patientId)
-                            .orElseThrow(() -> {
-                                System.out.println("DEBUG ERROR: Patient ID " + patientId + " NOT FOUND in database");
-                                return new RuntimeException("Patient profile update failed: Patient record (ID: "
-                                        + patientId + ") does not exist.");
-                            });
-                    return HealthProfile.builder().patient(patient).build();
-                });
+                .orElseGet(() -> HealthProfile.builder().patient(patient).build());
 
         if (profileDetails.getBloodType() != null && !profileDetails.getBloodType().isEmpty())
             profile.setBloodType(profileDetails.getBloodType());
@@ -77,15 +76,55 @@ public class MedicalRecordService {
         if (profileDetails.getPastMedicalHistory() != null && !profileDetails.getPastMedicalHistory().isEmpty())
             profile.setPastMedicalHistory(profileDetails.getPastMedicalHistory());
 
-        return healthProfileRepository.save(profile);
+        healthProfileRepository.save(profile);
+
+        // Update User Profile (Demographics)
+        Profile userProfile = profileRepository.findByUser(patient.getUser())
+                .orElseGet(() -> {
+                    Profile p = new Profile();
+                    p.setUser(patient.getUser());
+                    return p;
+                });
+
+        if (profileDetails.getGender() != null && !profileDetails.getGender().isEmpty())
+            userProfile.setGender(profileDetails.getGender());
+        if (profileDetails.getHomeAddress() != null && !profileDetails.getHomeAddress().isEmpty())
+            userProfile.setHomeAddress(profileDetails.getHomeAddress());
+        if (profileDetails.getEmergencyContactName() != null && !profileDetails.getEmergencyContactName().isEmpty())
+            userProfile.setEmergencyContactName(profileDetails.getEmergencyContactName());
+        if (profileDetails.getEmergencyContactPhone() != null && !profileDetails.getEmergencyContactPhone().isEmpty())
+            userProfile.setEmergencyContactPhone(profileDetails.getEmergencyContactPhone());
+
+        profileRepository.save(userProfile);
+
+        return mapToDto(profile, userProfile);
     }
 
-    public HealthProfile getPatientHealthProfile(Long patientId) {
-        return healthProfileRepository.findByPatient_PatientId(patientId)
-                .orElseGet(() -> {
-                    Patient patient = patientRepository.findById(patientId)
-                            .orElseThrow(() -> new RuntimeException("Patient not found ID: " + patientId));
-                    return HealthProfile.builder().patient(patient).build();
-                });
+    public PatientProfileDto getPatientHealthProfile(Long patientId) {
+        Patient patient = patientRepository.findById(patientId)
+                .orElseThrow(() -> new RuntimeException("Patient not found ID: " + patientId));
+
+        HealthProfile healthProfile = healthProfileRepository.findByPatient_PatientId(patientId)
+                .orElseGet(() -> HealthProfile.builder().patient(patient).build());
+
+        Profile userProfile = profileRepository.findByUser(patient.getUser())
+                .orElse(null);
+
+        return mapToDto(healthProfile, userProfile);
+    }
+
+    private PatientProfileDto mapToDto(HealthProfile healthProfile, Profile userProfile) {
+        return PatientProfileDto.builder()
+                .height(healthProfile != null ? healthProfile.getHeight() : null)
+                .weight(healthProfile != null ? healthProfile.getWeight() : null)
+                .bloodType(healthProfile != null ? healthProfile.getBloodType() : null)
+                .knownAllergies(healthProfile != null ? healthProfile.getKnownAllergies() : null)
+                .currentMedications(healthProfile != null ? healthProfile.getCurrentMedications() : null)
+                .pastMedicalHistory(healthProfile != null ? healthProfile.getPastMedicalHistory() : null)
+                .gender(userProfile != null ? userProfile.getGender() : null)
+                .homeAddress(userProfile != null ? userProfile.getHomeAddress() : null)
+                .emergencyContactName(userProfile != null ? userProfile.getEmergencyContactName() : null)
+                .emergencyContactPhone(userProfile != null ? userProfile.getEmergencyContactPhone() : null)
+                .build();
     }
 }

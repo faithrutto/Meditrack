@@ -430,7 +430,12 @@ const PatientDashboard = () => {
                             </div>
                             <div>
                                 <p className="text-xs text-gray-500 uppercase">Emergency Contact</p>
-                                <p className="text-sm font-bold text-gray-900">{user?.emergencyContactPhone || 'No contact'}</p>
+                                <p className="text-sm font-bold text-gray-900">
+                                    {healthProfile?.emergencyContactName || user?.emergencyContactName || 'Not provided'}
+                                </p>
+                                <p className="text-xs text-gray-600">
+                                    {healthProfile?.emergencyContactPhone || user?.emergencyContactPhone || ''}
+                                </p>
                             </div>
                         </div>
                     </div>

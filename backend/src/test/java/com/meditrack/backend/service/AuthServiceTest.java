@@ -45,6 +45,9 @@ class AuthServiceTest {
     private JwtTokenProvider tokenProvider;
 
     @Mock
+    private com.meditrack.backend.repository.VerificationCodeRepository verificationCodeRepository;
+
+    @Mock
     private com.meditrack.backend.service.EmailService emailService;
 
     @InjectMocks
@@ -63,6 +66,9 @@ class AuthServiceTest {
         request.setFirstName("Test");
         request.setLastName("User");
         request.setRole("PATIENT");
+        request.setContactNumber("1234567890");
+        request.setDateOfBirth(java.time.LocalDate.of(2000, 1, 1));
+        request.setNationalId("ID12345");
 
         when(userRepository.existsByEmail("test@test.com")).thenReturn(false);
         when(passwordEncoder.encode(anyString())).thenReturn("hashed_password");
@@ -75,7 +81,8 @@ class AuthServiceTest {
         AuthResponse response = authService.register(request);
 
         assertNotNull(response);
-        assertEquals("User registered successfully. Please verify your email.", response.getMessage());
+        assertEquals("Registration successful. Please enter the verification code sent to your email.",
+                response.getMessage());
 
         verify(userRepository, times(1)).save(any(User.class));
         verify(profileRepository, times(1)).save(any());

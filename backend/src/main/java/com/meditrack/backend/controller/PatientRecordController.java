@@ -2,6 +2,7 @@ package com.meditrack.backend.controller;
 
 import com.meditrack.backend.model.Assessment;
 import com.meditrack.backend.model.HealthProfile;
+import com.meditrack.backend.dto.PatientProfileDto;
 import com.meditrack.backend.service.MedicalRecordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -37,15 +38,15 @@ public class PatientRecordController {
 
     @PutMapping("/profile/{patientId}")
     @PreAuthorize("hasRole('PROVIDER') or (hasRole('PATIENT') and @userSecurity.isCurrentUserPatient(#patientId))")
-    public ResponseEntity<HealthProfile> updateHealthProfile(
+    public ResponseEntity<PatientProfileDto> updateHealthProfile(
             @PathVariable("patientId") Long patientId,
-            @RequestBody HealthProfile profile) {
+            @RequestBody PatientProfileDto profile) {
         return ResponseEntity.ok(medicalRecordService.updateHealthProfile(patientId, profile));
     }
 
     @GetMapping("/profile/{patientId}")
     @PreAuthorize("hasRole('PROVIDER') or (hasRole('PATIENT') and @userSecurity.isCurrentUserPatient(#patientId))")
-    public ResponseEntity<HealthProfile> getPatientHealthProfile(@PathVariable("patientId") Long patientId) {
+    public ResponseEntity<PatientProfileDto> getPatientHealthProfile(@PathVariable("patientId") Long patientId) {
         return ResponseEntity.ok(medicalRecordService.getPatientHealthProfile(patientId));
     }
 }

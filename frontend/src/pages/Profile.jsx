@@ -2,8 +2,9 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
-import { User, ShieldCheck, Mail, Hash, Calendar, Settings, Moon, Sun, ClipboardList, Droplets, AlertTriangle, Phone, Activity } from 'lucide-react';
+import { User as UserIcon, ShieldCheck, Mail, Hash, Calendar, Settings, Moon, Sun, ClipboardList, Droplets, AlertTriangle, Phone, Activity, MapPin } from 'lucide-react';
 import api from '../api/axiosConfig';
+import AccountCard from '../components/AccountCard';
 
 const Profile = () => {
     const { user } = useContext(AuthContext);
@@ -25,7 +26,11 @@ const Profile = () => {
         bloodType: '',
         knownAllergies: '',
         currentMedications: '',
-        pastMedicalHistory: ''
+        pastMedicalHistory: '',
+        gender: '',
+        homeAddress: '',
+        emergencyContactName: '',
+        emergencyContactPhone: ''
     });
     const [updatingProfile, setUpdatingProfile] = useState(false);
 
@@ -49,7 +54,11 @@ const Profile = () => {
                     bloodType: profile.bloodType || '',
                     knownAllergies: profile.knownAllergies || '',
                     currentMedications: profile.currentMedications || '',
-                    pastMedicalHistory: profile.pastMedicalHistory || ''
+                    pastMedicalHistory: profile.pastMedicalHistory || '',
+                    gender: profile.gender || '',
+                    homeAddress: profile.homeAddress || '',
+                    emergencyContactName: profile.emergencyContactName || '',
+                    emergencyContactPhone: profile.emergencyContactPhone || ''
                 });
             }
 
@@ -224,6 +233,11 @@ const Profile = () => {
 
     return (
         <div className="max-w-4xl mx-auto space-y-8 pb-12">
+
+            <div className="flex justify-center">
+                <AccountCard user={user} profile={healthProfile} />
+            </div>
+
             {/* Personal Info Card */}
             <div className="bg-white dark:bg-dark-surface rounded-xl shadow-sm border border-gray-100 dark:border-dark-border p-8">
                 <div className="flex items-center space-x-4 mb-8">
@@ -237,7 +251,7 @@ const Profile = () => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <DetailItem label="Full Name" value={`${user?.firstName} ${user?.lastName}`} icon={User} />
+                    <DetailItem label="Full Name" value={`${user?.firstName} ${user?.lastName}`} icon={UserIcon} />
                     <DetailItem label="Email Address" value={user?.email} icon={Mail} />
                     <DetailItem label="Patient ID" value={user?.patientId ? `#${user.patientId}` : 'N/A'} icon={Hash} />
                     <div className="flex items-start space-x-3 p-4 bg-gray-50 dark:bg-dark-surface rounded-lg border dark:border-dark-border">
@@ -250,6 +264,73 @@ const Profile = () => {
                                 type="text"
                                 value={profileEditData.bloodType}
                                 onChange={(e) => setProfileEditData({ ...profileEditData, bloodType: e.target.value })}
+                                className="mt-1 block w-full border-none bg-transparent p-0 text-base text-gray-900 dark:text-gray-100 font-medium focus:ring-0"
+                                placeholder="Not provided"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="flex items-start space-x-3 p-4 bg-gray-50 dark:bg-dark-surface rounded-lg border dark:border-dark-border">
+                        <div className="p-2 bg-white dark:bg-dark-bg rounded-md shadow-sm border border-gray-100 dark:border-dark-border">
+                            <UserIcon className="h-5 w-5 text-indigo-500" />
+                        </div>
+                        <div className="flex-1">
+                            <label className="block text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Gender</label>
+                            <select
+                                value={profileEditData.gender}
+                                onChange={(e) => setProfileEditData({ ...profileEditData, gender: e.target.value })}
+                                className="mt-1 block w-full border-none bg-transparent p-0 text-base text-gray-900 dark:text-gray-100 font-medium focus:ring-0"
+                            >
+                                <option value="">Not provided</option>
+                                <option value="MALE">Male</option>
+                                <option value="FEMALE">Female</option>
+                                <option value="OTHER">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div className="flex items-start space-x-3 p-4 bg-gray-50 dark:bg-dark-surface rounded-lg border dark:border-dark-border">
+                        <div className="p-2 bg-white dark:bg-dark-bg rounded-md shadow-sm border border-gray-100 dark:border-dark-border">
+                            <MapPin className="h-5 w-5 text-emerald-500" />
+                        </div>
+                        <div className="flex-1">
+                            <label className="block text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Home Address</label>
+                            <input
+                                type="text"
+                                value={profileEditData.homeAddress}
+                                onChange={(e) => setProfileEditData({ ...profileEditData, homeAddress: e.target.value })}
+                                className="mt-1 block w-full border-none bg-transparent p-0 text-base text-gray-900 dark:text-gray-100 font-medium focus:ring-0"
+                                placeholder="Not provided"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="flex items-start space-x-3 p-4 bg-gray-50 dark:bg-dark-surface rounded-lg border dark:border-dark-border">
+                        <div className="p-2 bg-white dark:bg-dark-bg rounded-md shadow-sm border border-gray-100 dark:border-dark-border">
+                            <Phone className="h-5 w-5 text-rose-500" />
+                        </div>
+                        <div className="flex-1">
+                            <label className="block text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Emergency Contact Name</label>
+                            <input
+                                type="text"
+                                value={profileEditData.emergencyContactName}
+                                onChange={(e) => setProfileEditData({ ...profileEditData, emergencyContactName: e.target.value })}
+                                className="mt-1 block w-full border-none bg-transparent p-0 text-base text-gray-900 dark:text-gray-100 font-medium focus:ring-0"
+                                placeholder="Not provided"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="flex items-start space-x-3 p-4 bg-gray-50 dark:bg-dark-surface rounded-lg border dark:border-dark-border">
+                        <div className="p-2 bg-white dark:bg-dark-bg rounded-md shadow-sm border border-gray-100 dark:border-dark-border">
+                            <Phone className="h-5 w-5 text-rose-500" />
+                        </div>
+                        <div className="flex-1">
+                            <label className="block text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Emergency Contact Phone</label>
+                            <input
+                                type="text"
+                                value={profileEditData.emergencyContactPhone}
+                                onChange={(e) => setProfileEditData({ ...profileEditData, emergencyContactPhone: e.target.value })}
                                 className="mt-1 block w-full border-none bg-transparent p-0 text-base text-gray-900 dark:text-gray-100 font-medium focus:ring-0"
                                 placeholder="Not provided"
                             />

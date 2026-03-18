@@ -42,4 +42,19 @@ public class Profile {
     // Dark mode setting
     @Column(name = "is_dark_mode")
     private boolean isDarkMode = false;
+
+    @Column(name = "contact_number")
+    private String contactNumber;
+
+    @Column(name = "date_of_birth")
+    private java.time.LocalDate dateOfBirth;
+
+    @Column(name = "national_id")
+    private String nationalId;
+
+    @Column(name = "gender")
+    private String gender;
+
+    @Column(name = "home_address")
+    private String homeAddress;
 }
